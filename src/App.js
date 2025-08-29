@@ -49,20 +49,41 @@ export default function App() {
   const [direction, setDirection] = useState(0);
 
   // Efeito para buscar os agendamentos confirmados quando o app carrega
+  const MyComponent = () => {
+  const [schedules, setSchedules] = useState([]);
+  const [error, setError] = useState(null);
+
+  // Buscar agendamentos ao montar o componente
   useEffect(() => {
-    const fetchSchedules = async () => {
-        try {
-            const response = await fetch(`${API_URL}/schedules`);
-            if (!response.ok) throw new Error('Falha ao buscar agendamentos');
-            const data = await response.json();
-            setBookedSchedules(data);
-        } catch (error) {
-            console.error("Erro ao buscar agendamentos:", error);
-            // Opcional: mostrar um erro para o usuário
-        }
-    };
-    fetchSchedules();
+    getSchedules()
+      .then(data => setSchedules(data))
+      .catch(err => setError(err.message));
   }, []);
+
+  // Função para criar novo agendamento
+  const handleNewSchedule = async () => {
+    try {
+      const newItem = { date: "2025-08-30", time: "18:00" };
+      const saved = await createSchedule(newItem);
+      setSchedules(prev => [...prev, saved]);
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  return (
+    <div>
+      {error && <p style={{ color: "red" }}>{error}</p>}
+      <ul>
+        {schedules.map((s, index) => (
+          <li key={index}>{s.date} - {s.time}</li>
+        ))}
+      </ul>
+      <button onClick={handleNewSchedule}>Adicionar Agendamento</button>
+    </div>
+  );
+};
+
 
   // --- Funções de Lógica de Negócio ---
 
