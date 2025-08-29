@@ -20,7 +20,7 @@ function formatDate(date) {
     return [year, month, day].join('-');
 }
 
-const API_URL = 'http://localhost:3002/api';
+const API_URL = process.env.REACT_APP_API_URL;
 
 // --- Componente Principal da Aplicação ---
 // O `App` é o "cérebro" da aplicação. Ele controla qual tela é exibida e gerencia os dados principais.
