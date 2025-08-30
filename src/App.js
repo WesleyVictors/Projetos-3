@@ -95,40 +95,26 @@ export default function App() {
   }, []);
 
   // `handleRegister`: Lida com o cadastro de um novo usuário.
-  const handleRegister = async (userData) => {
-      try {
-        const response = await fetch(`${API_URL}/register`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(userData),
-        });
-        const data = await response.json();
-        if (!response.ok) {
-            throw new Error(data.message || 'Erro no registro');
-        }
-        handleAuthSuccess(data.user);
-      } catch (error) {
-        setAuthError(error.message);
-      }
+    const handleRegister = async (userData) => {
+    try {
+      const user = await registerUser(userData);
+      handleAuthSuccess(user);
+    } catch (error) {
+      setAuthError(error.message);
+    }
   };
 
-  // `handleLogin`: Lida com a tentativa de login.
+  // Login do usuário
   const handleLogin = async (loginData) => {
-      try {
-        const response = await fetch(`${API_URL}/login`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(loginData),
-        });
-        const data = await response.json();
-        if (!response.ok) {
-            throw new Error(data.message || 'Erro no login');
-        }
-        handleAuthSuccess(data.user);
-      } catch (error) {
-        setAuthError(error.message);
-      }
+    try {
+      const user = await loginUser(loginData);
+      handleAuthSuccess(user);
+    } catch (error) {
+      setAuthError(error.message);
+    }
   };
+
+
 
   // `handleAuthSuccess`: Centraliza as ações a serem tomadas após login/cadastro bem-sucedido.
   const handleAuthSuccess = async (userData) => {
