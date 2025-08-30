@@ -1,21 +1,32 @@
+// src/services/auth.js
 const API_URL = process.env.REACT_APP_API_URL;
 
-export async function getSchedules() {
-  const response = await fetch(`${API_URL}/schedules`);
+export async function registerUser(userData) {
+  const response = await fetch(`${API_URL}/register`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(userData),
+  });
+
+  const data = await response.json();
   if (!response.ok) {
-    throw new Error("Erro ao carregar agendamentos");
+    throw new Error(data.message || 'Erro no registro');
   }
-  return response.json();
+
+  return data.user; // Retorna o usuário criado
 }
 
-export async function createSchedule(newSchedule) {
-  const response = await fetch(`${API_URL}/schedules`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(newSchedule),
+export async function loginUser(loginData) {
+  const response = await fetch(`${API_URL}/login`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(loginData),
   });
+
+  const data = await response.json();
   if (!response.ok) {
-    throw new Error("Erro ao criar agendamento");
+    throw new Error(data.message || 'Erro no login');
   }
-  return response.json();
+
+  return data.user; // Retorna o usuário logado
 }

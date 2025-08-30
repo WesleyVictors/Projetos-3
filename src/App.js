@@ -4,6 +4,8 @@ import { Calendar, Gamepad2, User, ArrowLeft, Watch, Trophy, Plus, Minus, Users,
 // import de animações 
 import { motion, AnimatePresence } from 'framer-motion';
 
+import { registerUser, loginUser } from './services/api';
+
 const allPossibleTimes = ["09:00", "10:30", "12:00", "14:30", "16:00", "17:30", "18:30", "20:00", "21:30", "23:00"];
 // PREÇO ATUALIZADO
 const price = "R$ 2,00"; // Preço padrão da quadra, que poderia vir de uma configuração do backend.
@@ -95,26 +97,23 @@ export default function App() {
   }, []);
 
   // `handleRegister`: Lida com o cadastro de um novo usuário.
-    const handleRegister = async (userData) => {
-    try {
-      const user = await registerUser(userData);
-      handleAuthSuccess(user);
-    } catch (error) {
-      setAuthError(error.message);
-    }
-  };
+  const handleRegister = async (userData) => {
+  try {
+    const user = await registerUser(userData);
+    handleAuthSuccess(user);
+  } catch (error) {
+    setAuthError(error.message);
+  }
+};
 
-  // Login do usuário
-  const handleLogin = async (loginData) => {
-    try {
-      const user = await loginUser(loginData);
-      handleAuthSuccess(user);
-    } catch (error) {
-      setAuthError(error.message);
-    }
-  };
-
-
+const handleLogin = async (loginData) => {
+  try {
+    const user = await loginUser(loginData);
+    handleAuthSuccess(user);
+  } catch (error) {
+    setAuthError(error.message);
+  }
+};
 
   // `handleAuthSuccess`: Centraliza as ações a serem tomadas após login/cadastro bem-sucedido.
   const handleAuthSuccess = async (userData) => {
